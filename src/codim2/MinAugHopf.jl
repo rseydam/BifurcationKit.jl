@@ -357,6 +357,7 @@ function continuation_hopf(prob_vf, alg::AbstractContinuationAlgorithm,
 
                 jacobian_ma::Symbol = :autodiff,
                 compute_eigen_elements = false,
+                autodiff_nf = true,
                 usehessian = true,
                 kind = HopfCont(),
                 massmatrix = LinearAlgebra.I,
@@ -508,7 +509,7 @@ function continuation_hopf(prob_vf, alg::AbstractContinuationAlgorithm,
         ζ★ ./= dot(ζ, ζ★)
         @debug "Hopf normal form computation"
         hp0 = Hopf(x, nothing, p1, ω, newpar, lens1, ζ, ζ★, (a = zero(Complex{T}), b = zero(Complex{T})), :hopf)
-        hp = hopf_normal_form(prob_vf, hp0, options_newton.linsolver, verbose = false) # CA ALLOUE DANS hp !!!
+        hp = hopf_normal_form(prob_vf, hp0, options_newton.linsolver, verbose = false, autodiff = autodiff_nf) # CA ALLOUE DANS hp !!!
         @debug "" hp.nf.a hp.nf.b
 
         # lyapunov coefficient
